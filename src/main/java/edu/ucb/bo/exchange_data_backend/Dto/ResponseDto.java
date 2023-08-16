@@ -1,9 +1,18 @@
 package edu.ucb.bo.exchange_data_backend.Dto;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class ResponseDto <T> {
     private String code;
     private T response;
     private String error;
+
+    public ResponseDto() {
+    }
+
 
     public ResponseDto(String code, T response, String error) {
         this.code = code;

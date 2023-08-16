@@ -1,7 +1,10 @@
 package edu.ucb.bo.exchange_data_backend.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestDto {
     private String to;
     private String from;
@@ -11,6 +14,9 @@ public class RequestDto {
         this.to = to;
         this.from = from;
         this.amount = amount;
+    }
+
+    public RequestDto() {
     }
 
     public String getTo() {

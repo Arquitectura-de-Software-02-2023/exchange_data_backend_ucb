@@ -1,3 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/currency_db
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
 currency:
   url: https://api.apilayer.com/exchangerates_data/convert
   apiKey: Tan1rLeMHLNa1kBHq37GvVukmLF7bFDY

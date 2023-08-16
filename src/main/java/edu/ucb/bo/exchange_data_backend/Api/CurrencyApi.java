@@ -20,11 +20,9 @@ public class CurrencyApi {
 
     @GetMapping()
     public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount){
+
         ResponseDto responseDto = currencyBl.exchange(to, from, amount);
         return responseDto;
     }
-
-
-
 
 }
