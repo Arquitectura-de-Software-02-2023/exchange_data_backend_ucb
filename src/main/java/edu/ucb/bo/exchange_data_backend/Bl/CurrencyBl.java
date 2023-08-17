@@ -30,6 +30,25 @@ public class CurrencyBl {
     @Value("${currency.apiKey}")
     private String apiKey;
 
+    public String callingCurrencyService(String to, String from, BigDecimal amount){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url+"?from="+from+"&to="+to+"&amount="+amount)
+                .addHeader("apiKey", apiKey)
+                .build();
+        Call call = client.newCall(request);
+        try {
+            Response response = call.execute();
+            String res = response.body().string();
+            if(response.isSuccessful()){
+                return res;
+            }
+            throw new RuntimeException("Error calling the currency API");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public ResponseDto exchange (String to, String from, BigDecimal amount){
         Logger logger = Logger.getLogger(CurrencyBl.class.getName());
         logger.info("Entering to Bussiness Logic");
@@ -68,7 +87,6 @@ public class CurrencyBl {
     }
 
     public void saveExchange(CurrencyDto currencyDto){
-        System.out.println(currencyDto);
         Exchange exchange = new Exchange();
         Logger logger = Logger.getLogger(CurrencyBl.class.getName());
         logger.info("Saving the exchange");
@@ -94,6 +112,31 @@ public class CurrencyBl {
         logger.info("Returning the exchange");
         return res;
     }
+
+    public ResponseDto updateExchange(Long id, String to, String from, BigDecimal amount){
+        Logger logger = Logger.getLogger(CurrencyBl.class.getName());
+        logger.info("Updating the exchange");
+        ResponseDto res = new ResponseDto();
+        res.setCode("200");
+        logger.info("Calling the repository");
+        exchangeRepository.updateExchangeById(id, to, from, amount);
+        logger.info("Calling the repository after update");
+        res.setResponse(exchangeRepository.findExchangeById(id));
+        return res;
+    }
+
+    public ResponseDto deleteExchange(int id){
+        Logger logger = Logger.getLogger(CurrencyBl.class.getName());
+        logger.info("Deleting the exchange");
+        ResponseDto res = new ResponseDto();
+        res.setCode("200");
+        logger.info("Calling the repository");
+        exchangeRepository.deleteById(id);
+        logger.info("Calling the repository after delete");
+        return res;
+    }
+
+
 
 
 
