@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>edu.ucb.bo</groupId>
 	<artifactId>exchange_data_backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4</version>
 	<name>exchange_data_backend</name>
 	<description>Exchange data backend</description>
 	<properties>

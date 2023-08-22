@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: 123456
-    url: jdbc:postgresql://localhost:5432/currency_db
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/currency_db}
   servlet:
     multipart:
       max-file-size: 50MB
