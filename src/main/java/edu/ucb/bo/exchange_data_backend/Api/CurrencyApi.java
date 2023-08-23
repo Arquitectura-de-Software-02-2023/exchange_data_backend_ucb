@@ -2,6 +2,7 @@ package edu.ucb.bo.exchange_data_backend.Api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucb.bo.exchange_data_backend.Bl.CurrencyBl;
+import edu.ucb.bo.exchange_data_backend.Dto.CurrencyDto;
 import edu.ucb.bo.exchange_data_backend.Dto.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class CurrencyApi {
 
     @PostMapping()
     public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount){
-        ResponseDto responseDto = currencyBl.exchange(to, from, amount);
-        return responseDto;
+        CurrencyDto currencyDto = currencyBl.callingCurrencyService(to, from, amount);
+        return currencyBl.saveExchange(currencyDto);
     }
 
     @GetMapping()
@@ -34,10 +35,14 @@ public class CurrencyApi {
         return responseDto;
     }
 
+
+
+
     @DeleteMapping()
     public ResponseDto deleteExchange(@RequestParam Integer id){
         ResponseDto responseDto = currencyBl.deleteExchange(id);
         return responseDto;
     }
+
 
 }
