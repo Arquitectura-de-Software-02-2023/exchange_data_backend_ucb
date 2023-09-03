@@ -44,5 +44,14 @@ public class CurrencyApi {
         return responseDto;
     }
 
+    @GetMapping("/all")
+    public ResponseDto getAllExchange(){
+        ResponseDto responseDto = currencyBl.getAllExchange();
+        return responseDto;
+    }
+
+
+
+
 
 }

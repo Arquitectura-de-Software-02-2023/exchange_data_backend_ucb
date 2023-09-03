@@ -8,6 +8,7 @@ import edu.ucb.bo.exchange_data_backend.Dto.CurrencyDto;
 import edu.ucb.bo.exchange_data_backend.Dto.RequestDto;
 import edu.ucb.bo.exchange_data_backend.Dto.ResponseDto;
 import edu.ucb.bo.exchange_data_backend.Entity.CuExchange;
+import edu.ucb.bo.exchange_data_backend.Entity.CuUser;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,7 +21,9 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -123,6 +126,32 @@ public class CurrencyBl {
         logger.info("Calling the repository");
         cuExchangeRepository.deleteById(id);
         logger.info("Calling the repository after delete");
+        return res;
+    }
+
+    public ResponseDto getAllExchange(){
+        Logger logger = Logger.getLogger(CurrencyBl.class.getName());
+        logger.info("Getting all the exchanges");
+        ResponseDto res = new ResponseDto();
+        res.setCode("200");
+        CuUser cuUser = cuUserRepository.findCuUserById(1); //Need the user ID as a parameter
+        List<CuExchange> cuExchangeList = cuExchangeRepository.findAllByCuUser(cuUser);
+        List<CurrencyDto> currencyDtoList = new ArrayList<>();
+        for (CuExchange cuExchange : cuExchangeList) {
+            CurrencyDto currencyDto = new CurrencyDto();
+            RequestDto requestDto = new RequestDto();
+            requestDto.setFrom(cuExchange.getExFrom());
+            requestDto.setTo(cuExchange.getExTo());
+            requestDto.setAmount(cuExchange.getAmount());
+            currencyDto.setSuccess(true);
+            currencyDto.setQuery(requestDto);
+            currencyDto.setInfo(currencyDto.getInfo());
+            currencyDto.setDate(cuExchange.getDate().toString());
+            currencyDto.setResult(cuExchange.getResult());
+            currencyDtoList.add(currencyDto);
+        }
+        res.setResponse(currencyDtoList);
+        logger.info("Returning all the exchanges");
         return res;
     }
 
