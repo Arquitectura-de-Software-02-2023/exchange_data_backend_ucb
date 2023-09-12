@@ -105,12 +105,16 @@ public class CurrencyBl {
         return res;
     }
 
-    public ResponseDto updateExchange(Long id, String to, String from, BigDecimal amount){
+    public ResponseDto  updateExchange(Long id, String to, String from, BigDecimal amount){
         Logger logger = Logger.getLogger(CurrencyBl.class.getName());
         logger.info("Updating the exchange");
         ResponseDto res = new ResponseDto();
         res.setCode("200");
         logger.info("Calling the repository");
+        logger.info("To" + to);
+        logger.info("From" + from);
+        logger.info("Amount" + amount);
+
         CurrencyDto cu = callingCurrencyService(to, from, amount);
         cuExchangeRepository.updateExchangeById(id, to, from, amount, new Date(), cu.getResult());
         logger.info("Calling the repository after update");
@@ -143,6 +147,7 @@ public class CurrencyBl {
             requestDto.setFrom(cuExchange.getExFrom());
             requestDto.setTo(cuExchange.getExTo());
             requestDto.setAmount(cuExchange.getAmount());
+            currencyDto.setId(cuExchange.getId());
             currencyDto.setSuccess(true);
             currencyDto.setQuery(requestDto);
             currencyDto.setInfo(currencyDto.getInfo());

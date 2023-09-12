@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
+@CrossOrigin (origins = "*")
 @RequestMapping("/api/v1/exchange")
 public class CurrencyApi {
 

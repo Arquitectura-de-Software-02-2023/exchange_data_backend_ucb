@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CurrencyDto {
+    private int id;
     private boolean success;
     private RequestDto query;
     private InfoDto info;
@@ -17,12 +18,22 @@ public class CurrencyDto {
     public CurrencyDto() {
     }
 
-    public CurrencyDto(boolean success, RequestDto query, InfoDto info, String date, BigDecimal result) {
+    public CurrencyDto(int id, boolean success, RequestDto query, InfoDto info, String date, BigDecimal result) {
+        this.id = id;
         this.success = success;
         this.query = query;
         this.info = info;
         this.date = date;
         this.result = result;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isSuccess() {
@@ -68,7 +79,8 @@ public class CurrencyDto {
     @Override
     public String toString() {
         return "CurrencyDto{" +
-                "success=" + success +
+                "id=" + id +
+                ", success=" + success +
                 ", query=" + query +
                 ", info=" + info +
                 ", date='" + date + '\'' +

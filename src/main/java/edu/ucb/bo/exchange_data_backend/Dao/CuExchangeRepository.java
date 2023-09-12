@@ -20,7 +20,7 @@ public interface CuExchangeRepository extends JpaRepository<CuExchange, Integer>
     @Modifying
     @Query("UPDATE CuExchange SET exFrom = :cufrom, exTo = :cuto, amount = :amount, date = :currentDate, result = :result WHERE id = :id")
     @Transactional
-    void updateExchangeById(@Param("id") Long id, @Param("cufrom") String cufrom, @Param("cuto") String cuto, @Param("amount") BigDecimal amount, @Param("currentDate") Date currentDate, @Param("result") BigDecimal result);
+    void updateExchangeById(@Param("id") Long id,  @Param("cuto") String cuto, @Param("cufrom")  String cufrom, @Param("amount") BigDecimal amount, @Param("currentDate") Date currentDate, @Param("result") BigDecimal result);
 
 
 }
