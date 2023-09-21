@@ -1,0 +1,11 @@
+### Obtener token client-credencials
+POST http://localhost:8080/realms/prove/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+response_type=code&grant_type=client_credentials&client_id=backend_client&client_secret=7Uhgxu84CcOel16ycyItcTTZN0xnvwUY
+
+> {%
+    client.global.set("access_token", "Bearer " + response.body["access_token"]);
+    client.log(client.global.get("access_token"));
+%}
+###

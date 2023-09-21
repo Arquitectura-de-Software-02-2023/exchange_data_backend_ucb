@@ -10,6 +10,12 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/prove
+          jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
@@ -18,3 +24,12 @@ spring:
 currency:
   url: https://api.apilayer.com/exchangerates_data/convert
   apiKey: Tan1rLeMHLNa1kBHq37GvVukmLF7bFDY
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+token:
+  converter:
+    principal-attribute: preferred_username
+    resourse-id: backend_client
