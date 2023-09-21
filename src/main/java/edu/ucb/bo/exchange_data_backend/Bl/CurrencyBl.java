@@ -15,6 +15,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -116,6 +118,7 @@ public class CurrencyBl {
         logger.info("Amount" + amount);
 
         CurrencyDto cu = callingCurrencyService(to, from, amount);
+        cu.setId(Integer.parseInt(id.toString()));
         cuExchangeRepository.updateExchangeById(id, to, from, amount, new Date(), cu.getResult());
         logger.info("Calling the repository after update");
         res.setResponse(cu);
@@ -160,53 +163,28 @@ public class CurrencyBl {
         return res;
     }
 
-    /*
-
-    public ResponseDto responseDto (String response) throws JsonProcessingException {
+    public Page<CurrencyDto> getAllExchangePageable(Pageable pageable){
         Logger logger = Logger.getLogger(CurrencyBl.class.getName());
-        ObjectMapper objectMapper = new ObjectMapper();
-        ResponseDto res = new ResponseDto();
-        res.setCode("200");
-        res.setResponse(objectMapper.readValue(response, CurrencyDto.class));
-        saveExchange(objectMapper.readValue(response, CurrencyDto.class));
-        logger.info("Returning the response");
-        return res;
+        logger.info("Getting all the exchanges");
+        Page<CuExchange> cuExchangeList = cuExchangeRepository.findAllExchange(pageable);
+        logger.info("Returning all the exchanges");
+        return cuExchangeList.map(this::convertToDto);
     }
 
-
-
-
-
-    public ResponseDto updateExchange(Long id, String to, String from, BigDecimal amount){
-        Logger logger = Logger.getLogger(CurrencyBl.class.getName());
-        logger.info("Updating the exchange");
-        ResponseDto res = new ResponseDto();
-        res.setCode("200");
-        logger.info("Calling the repository");
-        exchangeRepository.updateExchangeById(id, to, from, amount);
-        logger.info("Calling the repository after update");
-        res.setResponse(exchangeRepository.findExchangeById(id));
-        return res;
+    private CurrencyDto convertToDto(CuExchange cuExchange){
+        CurrencyDto currencyDto = new CurrencyDto();
+        RequestDto requestDto = new RequestDto();
+        requestDto.setFrom(cuExchange.getExFrom());
+        requestDto.setTo(cuExchange.getExTo());
+        requestDto.setAmount(cuExchange.getAmount());
+        currencyDto.setId(cuExchange.getId());
+        currencyDto.setSuccess(true);
+        currencyDto.setQuery(requestDto);
+        currencyDto.setInfo(currencyDto.getInfo());
+        currencyDto.setDate(cuExchange.getDate().toString());
+        currencyDto.setResult(cuExchange.getResult());
+        return currencyDto;
     }
-
-    public ResponseDto deleteExchange(int id){
-        Logger logger = Logger.getLogger(CurrencyBl.class.getName());
-        logger.info("Deleting the exchange");
-        ResponseDto res = new ResponseDto();
-        res.setCode("200");
-        logger.info("Calling the repository");
-        exchangeRepository.deleteById(id);
-        logger.info("Calling the repository after delete");
-        return res;
-    }
-
-
-     */
-
-
-
-
-
 
 
 }
