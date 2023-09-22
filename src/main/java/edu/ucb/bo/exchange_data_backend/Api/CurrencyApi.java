@@ -8,20 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
 @RestController
-@CrossOrigin (origins = "*")
+//@CrossOrigin (origins = "*")
 @RequestMapping("/api/v1/exchange")
 public class CurrencyApi {
 
     @Autowired
     CurrencyBl currencyBl;
 
-    @PostMapping()
-    public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount){
+    @PostMapping("/new")
+    public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount, Authentication authentication){
         CurrencyDto currencyDto = currencyBl.callingCurrencyService(to, from, amount);
         return currencyBl.saveExchange(currencyDto);
     }
@@ -32,7 +33,7 @@ public class CurrencyApi {
         return responseDto;
     }
 
-    @PutMapping()
+    @PutMapping("/update")
     public ResponseDto updateExchange(@RequestParam Long id, @RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount) throws JsonProcessingException {
         ResponseDto responseDto = currencyBl.updateExchange(id, to, from, amount);
         return responseDto;

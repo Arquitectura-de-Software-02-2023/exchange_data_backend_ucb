@@ -2,6 +2,7 @@ package edu.ucb.bo.exchange_data_backend.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,11 +27,11 @@ public class GlobalSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests( (authorizeHttpRequests) -> {
             authorizeHttpRequests
-//                    .requestMatchers("/api/v1/currency/free").permitAll()
-//                    .requestMatchers("/api/v1/currency/hello").hasRole("USER")
-                    .anyRequest()
-                    .permitAll();
-//                    .authenticated();
+                    .requestMatchers("/api/v1/exchange/all").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/v1/exchange/new").hasRole("USER")
+                    .requestMatchers("/api/v1/exchange/update").hasRole("ADMIN")
+                    .requestMatchers (HttpMethod.OPTIONS, "/**").permitAll();
+//                    .anyRequest().permitAll();
         });
         http.oauth2ResourceServer( (oauth2) -> {
             oauth2.jwt( (jwt) -> jwt.jwtAuthenticationConverter(keycloakJwtTokenConverter));
