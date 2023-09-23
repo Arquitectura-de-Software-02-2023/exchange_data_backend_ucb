@@ -27,9 +27,9 @@ public class GlobalSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests( (authorizeHttpRequests) -> {
             authorizeHttpRequests
-                    .requestMatchers("/api/v1/exchange/all").permitAll()
-                    .requestMatchers(HttpMethod.POST,"/api/v1/exchange/new").hasRole("USER")
-                    .requestMatchers("/api/v1/exchange/update").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET,"/api/v1/exchange/all").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST,"/api/v1/exchange/new").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/exchange/update").permitAll()
                     .requestMatchers (HttpMethod.OPTIONS, "/**").permitAll();
 //                    .anyRequest().permitAll();
         });

@@ -28,31 +28,31 @@ public class CurrencyApi {
     }
 
     @GetMapping()
-    public ResponseDto getExchange(@RequestParam Long id){
+    public ResponseDto getExchange(@RequestParam Long id, Authentication authentication){
         ResponseDto responseDto = currencyBl.getExchange(id);
         return responseDto;
     }
 
     @PutMapping("/update")
-    public ResponseDto updateExchange(@RequestParam Long id, @RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount) throws JsonProcessingException {
+    public ResponseDto updateExchange(@RequestParam Long id, @RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount, Authentication authentication) throws JsonProcessingException {
         ResponseDto responseDto = currencyBl.updateExchange(id, to, from, amount);
         return responseDto;
     }
 
-    @DeleteMapping()
-    public ResponseDto deleteExchange(@RequestParam Integer id){
+    @DeleteMapping("/delete")
+    public ResponseDto deleteExchange(@RequestParam Integer id, Authentication authentication){
         ResponseDto responseDto = currencyBl.deleteExchange(id);
         return responseDto;
     }
 
     @GetMapping("/all")
-    public ResponseDto getAllExchange(){
+    public ResponseDto getAllExchange(Authentication authentication){
         ResponseDto responseDto = currencyBl.getAllExchange();
         return responseDto;
     }
 
     @GetMapping("/user/all")
-    public ResponseDto<Page<CurrencyDto>> getAllExchangeAdmin(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size){
+    public ResponseDto<Page<CurrencyDto>> getAllExchangeAdmin(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, Authentication authentication){
         Pageable pageable = PageRequest.of(page, size);
         System.out.println(pageable);
         ResponseDto res = new ResponseDto();
