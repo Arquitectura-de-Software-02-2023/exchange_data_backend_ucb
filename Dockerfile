@@ -31,5 +31,5 @@ ENV API_KEY "Tan1rLeMHLNa1kBHq37GvVukmLF7bFDY"
 ENV RESOURCE_ID "backend_client"
 
 
-
+ita
 ENTRYPOINT ["java", "-cp", "app:app/lib/*", "edu.ucb.bo.exchange_data_backend.ExchangeDataBackendApplication"]
