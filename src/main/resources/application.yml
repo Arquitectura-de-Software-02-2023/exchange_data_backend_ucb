@@ -1,10 +1,10 @@
 server:
-  port : 8081
+  port : ${PORT:8081}
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 123456
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:123456}
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/currency_db}
   servlet:
     multipart:
@@ -14,7 +14,7 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: http://localhost:8080/realms/prove
+          issuer-uri: ${ISSUER_URI:http://localhost:8080/realms/prove}
           jwk-set-uri: ${spring.security.oauth2.resource-server.jwt.issuer-uri}/protocol/openid-connect/certs
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -23,7 +23,7 @@ spring:
     show-sql: true
 currency:
   url: https://api.apilayer.com/exchangerates_data/convert
-  apiKey: Tan1rLeMHLNa1kBHq37GvVukmLF7bFDY
+  apiKey: ${API_KEY:Tan1rLeMHLNa1kBHq37GvVukmLF7bFDY}
 
 logging:
   level:
@@ -32,4 +32,4 @@ logging:
 token:
   converter:
     principal-attribute: preferred_username
-    resourse-id: backend_client
+    resource-id: ${RESOURCE_ID:backend_client}
