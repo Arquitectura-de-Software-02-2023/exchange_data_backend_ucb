@@ -29,6 +29,7 @@ public class GlobalSecurityConfiguration {
             authorizeHttpRequests
                     .requestMatchers(HttpMethod.GET,"/api/v1/exchange/all").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST,"/api/v1/exchange/new").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PUT,"/api/v1/exchange/update").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE,"/api/v1/exchange/delete").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET,"/api/v1/exchange/user/all").hasRole("USER")
                     .requestMatchers (HttpMethod.OPTIONS, "/**").permitAll();

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import edu.ucb.bo.exchange_data_backend.Bl.CurrencyBl;
 import edu.ucb.bo.exchange_data_backend.Dto.CurrencyDto;
 import edu.ucb.bo.exchange_data_backend.Dto.ResponseDto;
+import edu.ucb.bo.exchange_data_backend.State.CurrencyExchangeState;
+import edu.ucb.bo.exchange_data_backend.State.CurrencyState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,14 +19,20 @@ import java.math.BigDecimal;
 //@CrossOrigin (origins = "*")
 @RequestMapping("/api/v1/exchange")
 public class CurrencyApi {
+    private CurrencyState currencyState;
+
+
+
+    private final CurrencyBl currencyBl; // Add a final field for CurrencyBl
 
     @Autowired
-    CurrencyBl currencyBl;
-
+    public CurrencyApi(CurrencyBl currencyBl) {
+        this.currencyBl = currencyBl;
+        currencyState = new CurrencyExchangeState(currencyBl);
+    }
     @PostMapping("/new")
-    public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount, Authentication authentication){
-        CurrencyDto currencyDto = currencyBl.callingCurrencyService(to, from, amount);
-        return currencyBl.saveExchange(currencyDto);
+    public ResponseDto exchange(@RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount, Authentication authentication) throws JsonProcessingException {
+        return currencyState.handleExchangeRequest(to, from, amount, authentication);
     }
 
     @GetMapping()
@@ -35,20 +43,17 @@ public class CurrencyApi {
 
     @PutMapping("/update")
     public ResponseDto updateExchange(@RequestParam Long id, @RequestParam String to, @RequestParam String from, @RequestParam BigDecimal amount, Authentication authentication) throws JsonProcessingException {
-        ResponseDto responseDto = currencyBl.updateExchange(id, to, from, amount);
-        return responseDto;
+        return currencyState.handleUpdateRequest(id, to, from, amount, authentication);
     }
 
     @DeleteMapping("/delete")
     public ResponseDto deleteExchange(@RequestParam Integer id, Authentication authentication){
-        ResponseDto responseDto = currencyBl.deleteExchange(id);
-        return responseDto;
+        return currencyState.handleDeleteRequest(id, authentication);
     }
 
     @GetMapping("/all")
     public ResponseDto getAllExchange(Authentication authentication){
-        ResponseDto responseDto = currencyBl.getAllExchange();
-        return responseDto;
+        return currencyState.handleGetAllRequest(authentication);
     }
 
     @GetMapping("/user/all")
